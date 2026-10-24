@@ -1,0 +1,233 @@
+[index(2).html](https://github.com/user-attachments/files/33904981/index.2.html)
+# kacpara-demo<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>kaçpara.com – Tadilat için teklif al (Demo)</title>
+<meta name="description" content="Tadilat ve tamir işini anlat, Ankara’daki ustalardan teklif al. Bu bir prototip örneğidir.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#12343b;--ink2:#4a6168;--bg:#f6f7f7;--card:#fff;--line:#d9e0e1;--hi:#f2b705;--hi-ink:#2b2200;--ok:#1f7a4d}
+*{box-sizing:border-box}
+body{margin:0;font-family:Manrope,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+.wrap{max-width:680px;margin:0 auto;padding:0 18px 80px}
+.demo{background:var(--ink);color:#fff;font-size:13px;text-align:center;padding:8px 12px}
+header{padding:26px 0 10px}
+.logo{font-weight:800;font-size:24px;letter-spacing:-.5px}
+.logo b{background:var(--hi);color:var(--hi-ink);padding:0 6px;border-radius:4px}
+h1{font-size:30px;line-height:1.15;margin:18px 0 8px;letter-spacing:-.6px}
+h2{font-size:22px;margin:0 0 6px}
+p.sub{color:var(--ink2);margin:0 0 20px}
+.bar{display:flex;gap:6px;margin:14px 0 22px}
+.bar i{flex:1;height:5px;border-radius:3px;background:var(--line)}
+.bar i.on{background:var(--hi)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cat{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:16px;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.cat:hover,.cat:focus-visible{border-color:var(--ink);outline:none}
+.cat .ic{font-size:28px;display:block;margin-bottom:6px}
+.cat strong{display:block}
+.cat span.d{font-size:13px;color:var(--ink2)}
+label.f{display:block;font-weight:600;margin:18px 0 6px}
+.hint{font-weight:400;color:var(--ink2);font-size:13px}
+select,input[type=number],textarea{width:100%;font:inherit;padding:12px;border:2px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font:inherit;cursor:pointer;color:inherit}
+.chip[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip:focus-visible{outline:3px solid var(--hi)}
+.btn{display:inline-block;background:var(--hi);color:var(--hi-ink);border:0;border-radius:10px;padding:14px 22px;font:inherit;font-weight:800;cursor:pointer;margin-top:26px}
+.btn:focus-visible{outline:3px solid var(--ink)}
+.btn.ghost{background:transparent;border:2px solid var(--line);color:var(--ink);margin-right:10px}
+.drop{border:2px dashed var(--ink2);border-radius:12px;padding:22px;text-align:center;background:#fff}
+.drop input{display:block;margin:10px auto 0}
+.prev{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.prev video,.prev img{width:130px;height:100px;object-fit:cover;border-radius:8px;background:#000}
+.sum{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:14px 0}
+.sum dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px}
+.sum dt{color:var(--ink2)} .sum dd{margin:0;font-weight:600}
+.offer{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--hi);border-radius:12px;padding:16px;margin:12px 0}
+.offer .top{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.price{font-size:22px;font-weight:800}
+.meta{font-size:13px;color:var(--ink2)}
+.tag{display:inline-block;font-size:12px;background:#e7f3ec;color:var(--ok);padding:2px 8px;border-radius:6px;margin-top:6px;font-weight:600}
+.note{background:#fff7d6;border:1px solid #ecd46a;border-radius:10px;padding:12px;font-size:14px;margin-top:16px}
+.err{color:#b3261e;font-size:14px;margin-top:10px}
+@media(max-width:480px){.grid{grid-template-columns:1fr}h1{font-size:26px}}
+@media(prefers-reduced-motion:no-preference){main>section{animation:in .25s ease-out}@keyframes in{from{opacity:0;transform:translateY(6px)}}}
+</style>
+</head>
+<body>
+<div class="demo">Bu bir prototip örneğidir. Teklifler gerçek değildir, hiçbir bilgi kaydedilmez.</div>
+<div class="wrap">
+<header><div class="logo">kaç<b>para</b>.com</div></header>
+<div class="bar" id="bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+<main id="app"></main>
+</div>
+<script>
+// Geri bildirim için WhatsApp numaranı yaz (905XXXXXXXXX). Boş bırakırsan buton görünmez.
+const FEEDBACK_WA = "";
+
+const DISTRICTS = ["Çankaya","Keçiören","Yenimahalle","Etimesgut","Mamak","Sincan","Altındağ","Gölbaşı","Pursaklar","Polatlı"];
+const URGENCY = ["Bugün","2-3 gün içinde","Bu hafta","Acelem yok"];
+
+const CATS = [
+ {id:"su",name:"Su tesisatı",ic:"🚰",d:"Kaçak, tıkanıklık, batarya, tesisat",range:[600,6500],keşif:true,qs:[
+  {id:"sorun",l:"Sorun nedir?",t:"select",o:["Su kaçağı","Tıkanıklık","Musluk / batarya değişimi","Klozet / rezervuar","Tesisat yenileme","Diğer"]},
+  {id:"yer",l:"Nerede?",t:"chips",o:["Banyo","Mutfak","WC","Balkon","Tüm daire"]},
+  {id:"kesik",l:"Su ana vanadan kapatıldı mı?",t:"chips",o:["Evet","Hayır"],hint:"Kaçak varsa önce ana vanayı kapat."},
+  {id:"duvar",l:"Kaçak duvar veya tavanda görünüyor mu?",t:"chips",o:["Evet","Hayır","Bilmiyorum"]}]},
+ {id:"elektrik",name:"Elektrik tesisatı",ic:"⚡",d:"Priz, sigorta, aydınlatma, pano",range:[500,9000],keşif:true,qs:[
+  {id:"sorun",l:"Sorun nedir?",t:"select",o:["Priz / anahtar sorunu","Sigorta sürekli atıyor","Aydınlatma / avize montajı","Kablo yenileme","Pano değişimi","Diğer"]},
+  {id:"nokta",l:"Kaç nokta etkileniyor?",t:"number",u:"nokta"},
+  {id:"kismi",l:"Evin bir kısmında elektrik yok mu?",t:"chips",o:["Evet","Hayır"]},
+  {id:"bina",l:"Bina yaşı",t:"select",o:["0-10 yıl","10-25 yıl","25+ yıl","Bilmiyorum"],hint:"Eski binalarda tesisat daha kapsamlı olabilir."}]},
+ {id:"fayans",name:"Fayans",ic:"🧱",d:"Banyo, mutfak, zemin, balkon",range:[4000,45000],keşif:true,qs:[
+  {id:"alan",l:"Neresi döşenecek?",t:"chips",o:["Banyo","Mutfak","Zemin","Balkon","Diğer"]},
+  {id:"m2",l:"Yaklaşık alan",t:"number",u:"m²",hint:"Duvar + zemin toplamı."},
+  {id:"soküm",l:"Eski kaplamanın sökülmesi gerekiyor mu?",t:"chips",o:["Evet","Hayır","Bilmiyorum"]},
+  {id:"malzeme",l:"Malzemeyi kim alacak?",t:"chips",o:["Ben alacağım","Usta alsın"]},
+  {id:"asansor",l:"Binada asansör var mı?",t:"chips",o:["Var","Yok"]}]},
+ {id:"cam",name:"Cam balkon",ic:"🪟",d:"Katlanır, sürme, ısıcamlı",range:[9000,60000],keşif:true,qs:[
+  {id:"tip",l:"Sistem tipi",t:"select",o:["Katlanır","Sürme","Isıcamlı","Fikrim yok"]},
+  {id:"en",l:"Balkon genişliği",t:"number",u:"cm"},
+  {id:"boy",l:"Yükseklik",t:"number",u:"cm"},
+  {id:"kat",l:"Kaçıncı kat?",t:"number",u:".kat"},
+  {id:"renk",l:"Profil rengi",t:"chips",o:["Beyaz","Antrasit","Ahşap desen","Fark etmez"]}]},
+ {id:"pvc",name:"PVC pencere",ic:"🏠",d:"Pimapen, cam, söküm-montaj",range:[5000,70000],keşif:true,qs:[
+  {id:"adet",l:"Kaç pencere / kapı?",t:"number",u:"adet"},
+  {id:"olcu",l:"Ortalama pencere ölçüsü",t:"select",o:["Küçük (banyo, mutfak)","Orta (oda)","Büyük (salon, balkon kapısı)","Karışık"]},
+  {id:"cam",l:"Cam tipi",t:"chips",o:["Çift cam","Isıcamlı","Ses yalıtımlı","Fikrim yok"]},
+  {id:"soküm",l:"Eski pencerelerin sökümü gerekiyor mu?",t:"chips",o:["Evet","Hayır"]},
+  {id:"renk",l:"Renk",t:"chips",o:["Beyaz","Antrasit","Ahşap desen"]}]},
+ {id:"dus",name:"Duşa kabini",ic:"🚿",d:"Cam kabin, küvet üstü, nişli",range:[3500,25000],keşif:true,qs:[
+  {id:"tip",l:"Kabin tipi",t:"select",o:["Köşe","Düz","Nişli","Küvet üstü","Fikrim yok"]},
+  {id:"en",l:"En",t:"number",u:"cm"},
+  {id:"boy",l:"Boy",t:"number",u:"cm"},
+  {id:"kapi",l:"Kapı tipi",t:"chips",o:["Sürgülü","Menteşeli","Fark etmez"]},
+  {id:"renk",l:"Profil rengi",t:"chips",o:["Krom","Siyah","Fark etmez"]}]}
+];
+const MEDIA_HINT = {
+ su:"Kaçağın yerini ve çevresini gösteren 20-30 saniyelik bir video çek.",
+ elektrik:"Priz, pano ve sorunlu noktayı yakından çek. Elektrik açıkken tehlikeli yere dokunma.",
+ fayans:"Odayı 4 köşeden göster, zemin ve duvarı ayrı çek.",
+ cam:"Balkonu dıştan ve içten çek; metre ile ölçü aldığın anı da göster.",
+ pvc:"Her pencereyi karşıdan çek, metre ile genişlik ve yükseklik göster.",
+ dus:"Banyonun girişini ve duş alanının ölçüsünü metreyle göster."
+};
+
+const st = {step:0,cat:null,ans:{},district:"",urgency:"",desc:"",files:[]};
+const app = document.getElementById("app");
+const bar = document.getElementById("bar");
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = n => n.toLocaleString("tr-TR");
+
+function setBar(){[...bar.children].forEach((b,i)=>b.classList.toggle("on",i<=st.step))}
+function go(n){st.step=n;render();window.scrollTo({top:0,behavior:"smooth"})}
+
+function render(){
+  setBar();
+  if(st.step===0) return stepCat();
+  if(st.step===1) return stepDetail();
+  if(st.step===2) return stepMedia();
+  return stepResult();
+}
+
+function stepCat(){
+  app.innerHTML = `<section>
+   <h1>Tadilat işin kaç para tutar?</h1>
+   <p class="sub">İşi anlat, Ankara’daki ustalardan teklif al. Önce işin türünü seç.</p>
+   <div class="grid">${CATS.map(c=>`<button class="cat" data-id="${c.id}"><span class="ic">${c.ic}</span><strong>${c.name}</strong><span class="d">${c.d}</span></button>`).join("")}</div>
+  </section>`;
+  app.querySelectorAll(".cat").forEach(b=>b.onclick=()=>{st.cat=CATS.find(c=>c.id===b.dataset.id);st.ans={};go(1)});
+}
+
+function field(q){
+  const v = st.ans[q.id] ?? "";
+  const h = q.hint?`<span class="hint"> ${esc(q.hint)}</span>`:"";
+  let ctl="";
+  if(q.t==="select") ctl=`<select data-q="${q.id}"><option value="">Seç</option>${q.o.map(o=>`<option ${v===o?"selected":""}>${esc(o)}</option>`).join("")}</select>`;
+  if(q.t==="number") ctl=`<input type="number" inputmode="numeric" min="0" data-q="${q.id}" value="${esc(v)}" placeholder="${esc(q.u.replace(/^\./,""))}">`;
+  if(q.t==="chips") ctl=`<div class="chips" data-q="${q.id}">${q.o.map(o=>`<button type="button" class="chip" aria-pressed="${v===o}">${esc(o)}</button>`).join("")}</div>`;
+  return `<label class="f">${esc(q.l)}${h}</label>${ctl}`;
+}
+
+function stepDetail(){
+  const c = st.cat;
+  app.innerHTML = `<section>
+   <h2>${c.ic} ${c.name}</h2>
+   <p class="sub">Bu bilgiler ustaların daha doğru teklif vermesini sağlar.</p>
+   <label class="f">İlçe</label>
+   <select id="dist"><option value="">Seç</option>${DISTRICTS.map(d=>`<option ${st.district===d?"selected":""}>${d}</option>`).join("")}</select>
+   <label class="f">Ne zaman yapılsın?</label>
+   <div class="chips" id="urg">${URGENCY.map(u=>`<button type="button" class="chip" aria-pressed="${st.urgency===u}">${u}</button>`).join("")}</div>
+   ${c.qs.map(field).join("")}
+   <div class="err" id="err" role="alert"></div>
+   <button class="btn ghost" id="back">Geri</button><button class="btn" id="next">Devam et</button>
+  </section>`;
+  app.querySelectorAll("select[data-q]").forEach(s=>s.onchange=()=>st.ans[s.dataset.q]=s.value);
+  app.querySelectorAll("input[data-q]").forEach(i=>i.oninput=()=>st.ans[i.dataset.q]=i.value);
+  app.querySelectorAll(".chips[data-q]").forEach(g=>g.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{
+    st.ans[g.dataset.q]=b.textContent;g.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",x===b))}));
+  document.getElementById("dist").onchange=e=>st.district=e.target.value;
+  document.querySelectorAll("#urg .chip").forEach(b=>b.onclick=()=>{st.urgency=b.textContent;document.querySelectorAll("#urg .chip").forEach(x=>x.setAttribute("aria-pressed",x===b))});
+  document.getElementById("back").onclick=()=>go(0);
+  document.getElementById("next").onclick=()=>{
+    const missing = !st.district||!st.urgency||c.qs.some(q=>!st.ans[q.id]);
+    if(missing){document.getElementById("err").textContent="Devam etmek için tüm soruları yanıtla.";return}
+    go(2);
+  };
+}
+
+function stepMedia(){
+  app.innerHTML = `<section>
+   <h2>Video ve fotoğraf ekle</h2>
+   <p class="sub">${esc(MEDIA_HINT[st.cat.id])}</p>
+   <div class="drop"><strong>Video veya fotoğraf seç</strong><br><span class="hint">Demo’da dosyalar yüklenmez, yalnızca cihazında önizlenir.</span>
+   <input type="file" id="files" accept="video/*,image/*" multiple></div>
+   <div class="prev" id="prev"></div>
+   <label class="f">Eklemek istediğin not <span class="hint">(isteğe bağlı)</span></label>
+   <textarea id="desc" rows="3" placeholder="Örn. Sorun iki gündür devam ediyor.">${esc(st.desc)}</textarea>
+   <button class="btn ghost" id="back">Geri</button><button class="btn" id="send">Teklif iste</button>
+  </section>`;
+  const prev = document.getElementById("prev");
+  const draw = () => { prev.innerHTML=""; st.files.forEach(f=>{
+    const u=URL.createObjectURL(f);const el=document.createElement(f.type.startsWith("video")?"video":"img");
+    el.src=u;if(el.tagName==="VIDEO"){el.muted=true;el.controls=true} else el.alt="Seçilen fotoğraf";prev.appendChild(el)})};
+  draw();
+  document.getElementById("files").onchange=e=>{st.files=[...e.target.files].slice(0,5);draw()};
+  document.getElementById("desc").oninput=e=>st.desc=e.target.value;
+  document.getElementById("back").onclick=()=>go(1);
+  document.getElementById("send").onclick=()=>go(3);
+}
+
+function offers(){
+  const [lo,hi] = st.cat.range, span = hi-lo;
+  const r = n => Math.round(n/50)*50;
+  const names = [["Usta Hasan Y.","4,9",127,"Mamak"],["Kardeşler Tesisat","4,7",84,"Çankaya"],["Mehmet U. Ekibi","4,8",56,"Yenimahalle"]];
+  const pts = [.22,.35,.5];
+  return names.map((n,i)=>({name:n[0],puan:n[1],is:n[2],dist:st.district,min:r(lo+span*pts[i]*.6),max:r(lo+span*pts[i]*.6+span*.12),gun:[1,2,3][i]+(st.urgency==="Bugün"?0:1)}));
+}
+
+function stepResult(){
+  const c = st.cat;
+  const rows = [["İş",c.name],["İlçe",st.district],["Zamanlama",st.urgency],...c.qs.map(q=>[q.l.replace(/\?$/,""),st.ans[q.id]+(q.t==="number"?" "+q.u.replace(/^\./,"").replace("kat",""):"")])];
+  app.innerHTML = `<section>
+   <h1>Talebin ustalara iletildi</h1>
+   <p class="sub">Gerçek sistemde ${esc(st.district)} bölgesindeki ${esc(c.name.toLowerCase())} ustalarına bildirim gider. Aşağıdakiler örnek tekliflerdir.</p>
+   <div class="sum"><dl>${rows.map(r=>`<dt>${esc(r[0])}</dt><dd>${esc(r[1])}</dd>`).join("")}<dt>Dosya</dt><dd>${st.files.length} adet</dd></dl></div>
+   ${offers().map(o=>`<div class="offer"><div class="top"><strong>${esc(o.name)}</strong><span class="price">${fmt(o.min)}–${fmt(o.max)} TL</span></div>
+    <div class="meta">★ ${o.puan} · ${o.is} tamamlanan iş · ${esc(o.dist)} · ${o.gun} gün içinde başlayabilir</div>
+    <span class="tag">Ön teklif${c.keşif?" · yerinde keşifle kesinleşir":""}</span></div>`).join("")}
+   <div class="note"><strong>Not:</strong> Teklifler fotoğraf ve video üzerinden verilen ön tekliflerdir. Kesin fiyat, ustanın yerinde göreceği duruma göre netleşir.</div>
+   ${FEEDBACK_WA?`<a class="btn" href="https://wa.me/${FEEDBACK_WA}?text=${encodeURIComponent("kaçpara.com demosu hakkında düşüncem: ")}">Fikrini bize söyle</a>`:""}
+   <button class="btn ghost" id="again" style="margin-top:26px">Yeni talep oluştur</button>
+  </section>`;
+  document.getElementById("again").onclick=()=>{Object.assign(st,{step:0,cat:null,ans:{},district:"",urgency:"",desc:"",files:[]});render()};
+}
+render();
+</script>
+</body>
+</html>
